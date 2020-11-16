@@ -9,7 +9,7 @@ def le_processos():
     path = Path(__file__).parent / "../../Arquivos/processes.txt"
     with path.open() as arquivo:
         for processo in arquivo:
-            processos_objeto.append(Processo(processo.split(',')))
+            processos_objeto.append(Processo(processo.split(', ')))
     return(processos_objeto)
 
 
