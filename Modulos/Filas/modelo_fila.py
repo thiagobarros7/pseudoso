@@ -22,5 +22,5 @@ class Fila:
     
     def atualiza_prioridades(self):
         self.fila_usuario['prioridade1'].extend(self.fila_usuario['prioridade2'])
-        self.fila_usuario['prioridade2'].extend(self.fila_usuario['prioridade3'])
+        self.fila_usuario['prioridade2'] = self.fila_usuario['prioridade3']
         self.fila_usuario['prioridade3'] = []
