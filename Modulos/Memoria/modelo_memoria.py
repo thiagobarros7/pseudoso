@@ -8,6 +8,8 @@ class Memoria:
     def verifica_memoria(self, offset, tamanho_processo, nucleo=0):
         if(nucleo and (tamanho_processo+offset >= 64)):
             return(0)
+        elif(tamanho_processo+offset >= self.tamanho_memoria):
+            return(0)
         else:
             for index in range(offset, tamanho_processo+offset):
                 if self.memoria[index] != 0:
