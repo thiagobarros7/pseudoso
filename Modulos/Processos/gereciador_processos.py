@@ -8,12 +8,12 @@ def inicia_processos(processos, fila):
     for processo in processos:
         if(processo.tempo_de_inicializacao > tempo_de_inicializacao_anterior):
             time.sleep(processo.tempo_de_inicializacao - tempo_de_inicializacao_anterior)
-            print('Processo iniciado no tempo ' + str(processo.tempo_de_inicializacao))
             fila.insere_processo(processo)
+            print('Processo iniciado no tempo ' + str(processo.tempo_de_inicializacao))
             tempo_de_inicializacao_anterior = processo.tempo_de_inicializacao
         else:
-            print('Processo iniciado no tempo ' + str(processo.tempo_de_inicializacao))
             fila.insere_processo(processo)
+            print('Processo iniciado no tempo ' + str(processo.tempo_de_inicializacao))
 
 def gerencia_processos(processos):
     PID = 1
