@@ -1,8 +1,8 @@
 class Arquivo:
     def __init__(self, dados_arquivo):
         self.nome = dados_arquivo[0]
-        self.inicio = dados_arquivo[1]
-        self.tamanho = dados_arquivo[2]
+        self.inicio = int(dados_arquivo[1])
+        self.tamanho = int(dados_arquivo[2])
 
 
 class OperacaoArquivo:
@@ -11,6 +11,6 @@ class OperacaoArquivo:
         self.cod_operacao = dados_operacao[1]
         self.nome = dados_operacao[2]
         if(len(dados_operacao) == 4):
-            self.tamanho = dados_operacao[3]
+            self.tamanho = int(dados_operacao[3])
         else:
             self.tamanho = 0
