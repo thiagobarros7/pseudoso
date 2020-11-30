@@ -26,12 +26,12 @@ def le_arquivos():
                 if(i == 0):
                     blocos_disco = int(linha)
                 else:
-                    segmentos_ocupados = int(linha)
-            elif(i < segmentos_ocupados + 2):
+                    numero_arquivos = int(linha)
+            elif(i < numero_arquivos + 2):
                 arquivos.append(Arquivo(linha.split(',')))
             else:
                 operacoes.append(OperacaoArquivo(linha.split(',')))
             i = i+1
-    arquivos = {'blocos_disco': blocos_disco, 'segmentos_ocupados': segmentos_ocupados,
+    arquivos = {'blocos_disco': blocos_disco, 'numero_arquivos': numero_arquivos,
                 'arquivos': arquivos, 'operacoes': operacoes}
     return(arquivos)
