@@ -87,10 +87,10 @@ class Disco:
         return(0)
 
     def __executa_operacao(self, operacao):
-        if __verifica_processo(operacao.PID):
-            if __verifica_tempo_de_processador(operacao.PID):
-                self.tempos_de_processador[PID] -= 1
-                if (operacao.cod_operacao and operacao.tamanho):
+        if self.__verifica_processo(operacao.PID):
+            if self.__verifica_tempo_de_processador(operacao.PID):
+                self.tempos_de_processador[operacao.PID] -= 1
+                if (not operacao.cod_operacao and operacao.tamanho):
                     offset = self.__operacao_inserir(operacao)
                     if not self.__cadastra_dono_arquivo(operacao.PID, operacao.nome):
                         return({'status': 0, 'texto': 'Já existe um arquivo com o mesmo nome, operação de inserção cancelada'})
@@ -100,15 +100,15 @@ class Disco:
                                 texto_blocos = 'blocos ' + str(bloco_ocupado)
                             else:
                                 texto_blocos += ', ' + str(bloco_ocupado)
-                        return({'status': 1, 'texto': 'O processo ' + operacao.PID + ' criou o arquivo ' + operacao.nome + ' (' + texto_blocos + ').'})
+                        return({'status': 1, 'texto': 'O processo ' + str(operacao.PID) + ' criou o arquivo ' + operacao.nome + ' (' + texto_blocos + ').'})
                     else:
-                        return({'status': 0, 'texto': 'O processo ' + operacao.PID + ' não pode criar o arquivo ' + operacao.nome + ' (falta de espaço).'})
+                        return({'status': 0, 'texto': 'O processo ' + str(operacao.PID) + ' não pode criar o arquivo ' + operacao.nome + ' (falta de espaço).'})
                 else:
                     if self.__verifica_processo_usuario(operacao.PID):
                         if not self.__verifica_dono_arquivo(operacao.PID, operacao.nome):
                             return({'status': 0, 'texto': 'Processo de usuáio não é dono do arquivo, operação cancelada.'})
                     if self.__operacao_deletar(operacao):
-                        return({'status': 1, 'texto': 'O processo ' + operacao.PID + ' deletou o arquivo ' + operacao_nome + '.'})
+                        return({'status': 1, 'texto': 'O processo ' + str(operacao.PID) + ' deletou o arquivo ' + operacao_nome + '.'})
                     else:
                         return({'status': 0, 'texto': 'Arquivo inexistente!'})
             else:
