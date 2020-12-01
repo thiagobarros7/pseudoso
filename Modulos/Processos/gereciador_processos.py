@@ -16,7 +16,7 @@ def inicia_processos(processos, fila):
             print('Processo iniciado no tempo ' + str(processo.tempo_de_inicializacao))
 
 def gerencia_processos(processos):
-    PID = 1
+    PID = 0
     for processo in processos:
         
         PID += 1

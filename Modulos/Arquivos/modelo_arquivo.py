@@ -7,7 +7,7 @@ class Arquivo:
 
 class OperacaoArquivo:
     def __init__(self, dados_operacao):
-        self.id_processo = dados_operacao[0]
+        self.PID = dados_operacao[0]
         self.cod_operacao = dados_operacao[1]
         self.nome = dados_operacao[2]
         if(len(dados_operacao) == 4):

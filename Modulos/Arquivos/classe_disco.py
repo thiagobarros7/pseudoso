@@ -9,6 +9,9 @@ class Disco:
         self.blocos = [0]*arquivos_lidos['blocos_disco']
         self.arquivos = arquivos_lidos['arquivos']
         self.operacoes = arquivos_lidos['operacoes']
+        self.tempos_de_processador = []
+        self.flag_usuario = []
+        self.dono_arquivo = {}
         self.__insere_arquivos_iniciais()
 
     def __busca_espaco_vazio(self, tamanho_arquivo):
@@ -23,7 +26,7 @@ class Disco:
                     espaco_contiguo_vazio = espacos_vazios
                     if espaco_contiguo_vazio == tamanho_arquivo:
                         return i+1-tamanho_arquivo
-        return -1
+        return (-1)
 
     def __busca_arquivo(self, nome):
         tamanho_arquivo = 0
@@ -42,9 +45,9 @@ class Disco:
         if offset != -1:
             for i in range(offset, offset+operacao.tamanho):
                 self.blocos[i] = operacao.nome
-            return (1)
+            return (offset)
         else:
-            return (0)
+            return (-1)
 
     def __operacao_deletar(self, operacao):
         arquivo_achado, inicio_arquivo, tamanho_arquivo = self.__busca_arquivo(
@@ -56,25 +59,66 @@ class Disco:
             self.blocos[i] = 0
         return(1)
 
-    def __executa_operacao(self, operacao):
-        if (operacao.cod_operacao and operacao.tamanho):
-            offset = self.__operacao_inserir(operacao)
-            if offset:
-                for bloco_ocupado in range(offset, offset+operacao.tamanho):
-                    if bloco_ocupado == offset:
-                        texto_blocos = 'blocos ' + str(bloco_ocupado)
-                    else:
-                        texto_blocos += ', ' + str(bloco_ocupado)
-                return({'status': 1, 'texto': 'O processo ' + operacao.id_processo + ' criou o arquivo ' + operacao.nome + ' (' + texto_blocos + ').'})
-            else:
-                return({'status': 0, 'texto': 'O processo ' + operacao.id_processo + ' não pode criar o arquivo ' + operacao.nome + ' (falta de espaço).'})
-        else:
-            if self.__operacao_deletar(operacao):
-                return({'status': 1, 'texto': 'O processo ' + operacao.id_processo + ' deletou o arquivo ' + operacao_nome + '.'})
-            else:
-                return({'status': 0, 'texto': 'Arquivo inexistente!'})
+    def __verifica_processo_usuario(self, PID):
+        if self.flag_usuario[PID]:
+            return(1)
+        return(0)
 
-    def executa_operacoes(self):
+    def __verifica_dono_arquivo(self, PID, nome_arquivo):
+        if self.dono_arquivo[nome_arquivo] == PID:
+            return(1)
+        return(0)
+
+    def __cadastra_dono_arquivo(self, PID, nome_arquivo):
+        if nome_arquivo in self.dono_arquivo:
+            return(0)
+        else:
+            self.dono_arquivo[nome_arquivo] = PID
+            return(1)
+
+    def __verifica_tempo_de_processador(self, PID):
+        if self.tempos_de_processador[PID] > 0:
+            return(1)
+        return(0)
+
+    def __verifica_processo(self, PID):
+        if len(self.tempos_de_processador) > PID:
+            return (1)
+        return(0)
+
+    def __executa_operacao(self, operacao):
+        if __verifica_processo(operacao.PID):
+            if __verifica_tempo_de_processador(operacao.PID):
+                self.tempos_de_processador[PID] -= 1
+                if (operacao.cod_operacao and operacao.tamanho):
+                    offset = self.__operacao_inserir(operacao)
+                    if not self.__cadastra_dono_arquivo(operacao.PID, operacao.nome):
+                        return({'status': 0, 'texto': 'Já existe um arquivo com o mesmo nome, operação de inserção cancelada'})
+                    if offset != -1:
+                        for bloco_ocupado in range(offset, offset+operacao.tamanho):
+                            if bloco_ocupado == offset:
+                                texto_blocos = 'blocos ' + str(bloco_ocupado)
+                            else:
+                                texto_blocos += ', ' + str(bloco_ocupado)
+                        return({'status': 1, 'texto': 'O processo ' + operacao.PID + ' criou o arquivo ' + operacao.nome + ' (' + texto_blocos + ').'})
+                    else:
+                        return({'status': 0, 'texto': 'O processo ' + operacao.PID + ' não pode criar o arquivo ' + operacao.nome + ' (falta de espaço).'})
+                else:
+                    if self.__verifica_processo_usuario(operacao.PID):
+                        if not self.__verifica_dono_arquivo(operacao.PID, operacao.nome):
+                            return({'status': 0, 'texto': 'Processo de usuáio não é dono do arquivo, operação cancelada.'})
+                    if self.__operacao_deletar(operacao):
+                        return({'status': 1, 'texto': 'O processo ' + operacao.PID + ' deletou o arquivo ' + operacao_nome + '.'})
+                    else:
+                        return({'status': 0, 'texto': 'Arquivo inexistente!'})
+            else:
+                return({'status': 0, 'texto': 'Operação não realizada por falta de tempo de processador'})
+        else:
+            return({'status': 0, 'texto': 'Não existe o processo.'})
+
+    def executa_operacoes(self, tempos_de_processador, flag_usuario):
+        self.tempos_de_processador = tempos_de_processador
+        self.flag_usuario = flag_usuario
         status_operacoes = []
         for operacao in self.operacoes:
             status_operacoes.append(self.__executa_operacao(operacao))
