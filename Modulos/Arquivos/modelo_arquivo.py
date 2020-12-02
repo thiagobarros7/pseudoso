@@ -9,7 +9,7 @@ class OperacaoArquivo:
     def __init__(self, dados_operacao):
         self.PID = int(dados_operacao[0])
         self.cod_operacao = int(dados_operacao[1])
-        self.nome = dados_operacao[2]
+        self.nome = dados_operacao[2].rstrip()
         if(len(dados_operacao) == 4):
             self.tamanho = int(dados_operacao[3])
         else:

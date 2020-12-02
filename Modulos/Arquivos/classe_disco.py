@@ -108,7 +108,7 @@ class Disco:
                         if not self.__verifica_dono_arquivo(operacao.PID, operacao.nome):
                             return({'status': 0, 'texto': 'Processo de usuáio não é dono do arquivo, operação cancelada.'})
                     if self.__operacao_deletar(operacao):
-                        return({'status': 1, 'texto': 'O processo ' + str(operacao.PID) + ' deletou o arquivo ' + operacao_nome + '.'})
+                        return({'status': 1, 'texto': 'O processo ' + str(operacao.PID) + ' deletou o arquivo ' + operacao.nome + '.'})
                     else:
                         return({'status': 0, 'texto': 'Arquivo inexistente!'})
             else:
