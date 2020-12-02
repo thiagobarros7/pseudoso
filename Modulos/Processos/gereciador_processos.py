@@ -17,7 +17,7 @@ def inicia_processos(processos, fila):
             fila.insere_processo(processo)
             #print('Processo iniciado no tempo ' + str(processo.tempo_de_inicializacao))
 
-def gerencia_processos(fila_pronto, fila_bloqueio, processos, recursos, memoria, disco):
+def gerencia_processos(fila_pronto, processos, recursos, memoria, disco):
     CPU = threading.Lock()
     threads = []
     processos_finalizados = []
