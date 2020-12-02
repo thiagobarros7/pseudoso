@@ -1,6 +1,7 @@
 import threading
 import time
 import operator
+from thread_processo import executa_processo 
 
 def inicia_processos(processos, fila):
     processos = sorted(processos, key=operator.attrgetter('tempo_de_inicializacao'))
@@ -15,8 +16,9 @@ def inicia_processos(processos, fila):
             fila.insere_processo(processo)
             print('Processo iniciado no tempo ' + str(processo.tempo_de_inicializacao))
 
-def gerencia_processos(processos):
-    PID = 0
-    for processo in processos:
-        
-        PID += 1
+def gerencia_processos(fila, processos, recursos, memoria, disco):
+    while(true):
+        processo = fila.remove_processo()
+        if processo:
+            #dispatcher
+            

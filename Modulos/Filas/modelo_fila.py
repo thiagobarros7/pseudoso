@@ -40,5 +40,5 @@ class Fila:
             self.__atualiza_prioridades()
             return(processo)
         else:
-            print('Não há processos na fila.')
+            #print('Não há processos na fila.')
             return(0)
