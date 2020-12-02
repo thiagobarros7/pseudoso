@@ -1,7 +1,8 @@
 import time
 import threading
 
-def executa_processo(processo, recursos, fila_pronto, fila_bloqueio):
+def executa_processo(processo, recursos, fila_pronto, fila_bloqueio, CPU):
+    CPU.acquire()
     if processo.prioridade:
         if processo.numero_instrucao == 1:
             print("P"+str(processo.PID)+" STARTED")
@@ -17,6 +18,7 @@ def executa_processo(processo, recursos, fila_pronto, fila_bloqueio):
             print("P"+str(processo.PID)+" instruction "+str(processo.numero_instrucao))
             processo.numero_instrucao += 1
         time.sleep(1)
+        CPU.release()
     else:
         print("P"+str(processo.PID)+" STARTED")
         for i in range(1, processo.tempo_de_processador+1):
@@ -24,5 +26,6 @@ def executa_processo(processo, recursos, fila_pronto, fila_bloqueio):
             processo.numero_instrucao += 1
             time.sleep(1)
         print("P"+str(processo.PID)+" return SIGINT")
+        CPU.release()
 
 

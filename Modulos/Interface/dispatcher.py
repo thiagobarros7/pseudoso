@@ -4,7 +4,8 @@ class Despachante:
         self.flag_usuario = []
         self.proximo_PID = 0
     
-    def despacha_processo(self, processo):
+    def despacha_processo(self, processo, CPU):
+        CPU.acquire()
         if processo.PID == -1:
             processo.PID = self.proximo_PID
             self.proximo_PID += 1
@@ -23,8 +24,8 @@ class Despachante:
             else:
                 self.flag_usuario.append(0)
             self.tempos_de_processador.append(processo.tempo_de_processador)
-            return(1)
-        return(0)
+            
+        CPU.release()
 
     def executa_sistema_de_arquivos(self, disco):
         print('Sistema de arquivos =>')
