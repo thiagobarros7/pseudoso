@@ -3,31 +3,69 @@ import threading
 class Recursos:
 
     def __init__(self):
-        self.scanner = threading.Semaphore()
-        self.modem = threading.Semaphore()
-        self.impressora = threading.Semaphore(2)
-        self.sata = threading.Semaphore(2)
+        self.scanner = 1
+        self.modem = 1
+        self.impressora = 2
+        self.sata = 2
     
-    def requisita_recurso(self, recursos_processo):
-        for recurso, requisicao in enumerate(recursos_processo):
+    def requisita_recurso(self, processo, fila_pronto, fila_bloqueio):
+        for recurso, requisicao in enumerate(processo.recursos):
             if requisicao:
                 if recurso == 'cod_impressora':
-                    self.impressora.acquire()
+                    if self.impressora - 1 >= 0:
+                        self.impressora -= 1
+                        return(1)
+                    else:
+                        fila_bloqueio.insere_na_fila('impressora', processo)
+                        return(0)
                 elif recurso == 'scanner':
-                    self.scanner.acquire()
+                    if self.scanner - 1 >= 0:
+                        self.scanner -= 1
+                        return(1)
+                    else:
+                        fila_bloqueio.insere_na_fila('scanner', processo)
+                        return(0)
                 elif recurso == 'modem':
-                    self.modem.acquire()
+                    if self.modem - 1 >= 0:
+                        self.modem -= 1
+                        return(1)
+                    else:
+                        fila_bloqueio.insere_na_fila('modem', processo)
+                        return(0)
                 elif recurso == 'cod_disco':
-                    self.sata.acquire()
+                    if self.sata - 1 >= 0:
+                        self.sata -= 1
+                        return(1)
+                    else:
+                        fila_bloqueio.insere_na_fila('sata', processo)
+                        return(0)
+        return(1)
 
     def desaloca_recurso(self, recursos_processo):
         for recurso, requisicao in enumerate(recursos_processo):
             if requisicao:
                 if recurso == 'cod_impressora':
-                    self.impressora.release()
+                    self.impressora += 1
+                    if fila_bloqueio.remove_da_fila('impressora', fila_pronto):
+                        return(1)
+                    else:
+                        return(0)
                 elif recurso == 'scanner':
-                    self.scanner.release()
+                    self.scanner += 1
+                    if fila_bloqueio.remove_da_fila('scanner', fila_pronto):
+                        return(1)
+                    else:
+                        return(0)
                 elif recurso == 'modem':
-                    self.modem.release()
+                    self.modem += 1
+                    if fila_bloqueio.remove_da_fila('modem', fila_pronto):
+                        return(1)
+                    else:
+                        return(0)
                 elif recurso == 'cod_disco':
-                    self.sata.release()
+                    self.sata += 1
+                    if fila_bloqueio.remove_da_fila('sata', fila_pronto):
+                        return(1)
+                    else:
+                        return(0)
+        return(1)
