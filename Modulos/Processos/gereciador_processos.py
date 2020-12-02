@@ -20,20 +20,26 @@ def inicia_processos(processos, fila):
 def gerencia_processos(fila_pronto, fila_bloqueio, processos, recursos, memoria, disco):
     CPU = threading.Lock()
     threads = []
+    processos_finalizados = []
     despachante = Despachante()
     while(len(threads) < len(processos)):
         processo = fila_pronto.remove_processo()
         if processo:
             if processo.prioridade:
-                memoria.aloca_processo_usuario(processo)
-                despachante.despacha_processo(processo, CPU)
-                threads.append(threading.Thread(target=executa_processo, args=(processo, recursos, fila_pronto, fila_bloqueio, CPU, )))
-                threads[processo.PID].start()
-            else:
+                if processo.numero_instrucao == 1:
+                    memoria.aloca_processo_usuario(processo)
+                    despachante.despacha_processo(processo, CPU)
+                    threads.append(threading.Thread(target=executa_processo, args=(processo, recursos, CPU, )))
+                    threads[processo.PID].start()
+                else:
+                    threads[processo.PID].run()
+            elif processo.prioridade == 0:
                 memoria.aloca_processo_nucleo(processo)
                 despachante.despacha_processo(processo, CPU)
-                threads.append(threading.Thread(target=executa_processo, args=(processo, recursos, fila_pronto, fila_bloqueio, CPU, )))
+                threads.append(threading.Thread(target=executa_processo, args=(processo, recursos, CPU, )))
                 threads[processo.PID].start()
+                processos_finalizados.append(1)
+
     for thread in threads:
         thread.join()
     despachante.executa_sistema_de_arquivos(disco)

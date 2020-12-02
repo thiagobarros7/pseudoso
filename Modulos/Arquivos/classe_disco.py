@@ -65,8 +65,9 @@ class Disco:
         return(0)
 
     def __verifica_dono_arquivo(self, PID, nome_arquivo):
-        if self.dono_arquivo[nome_arquivo] == PID:
-            return(1)
+        if nome_arquivo in self.dono_arquivo:
+            if self.dono_arquivo[nome_arquivo] == str(PID):
+                return(1)
         return(0)
 
     def __cadastra_dono_arquivo(self, PID, nome_arquivo):
