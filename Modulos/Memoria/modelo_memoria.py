@@ -58,9 +58,13 @@ class Memoria:
 
     def desaloca_processo_usuario(self, processo):
         self.controle_memoria.acquire()
+        primeira_ocorrencia = 1
         for index, espaco in enumerate(self.memoria):
             if espaco == processo.PID:
                 self.memoria[index] = 0
+                if primeira_ocorrencia:
+                    self.offset_usuario = index
+                    primeira_ocorrencia = 0
         if self.memoria_usuario_cheia.locked():
             self.memoria_usuario_cheia.release()
         self.controle_memoria.release()
@@ -68,9 +72,13 @@ class Memoria:
 
     def desaloca_processo_nucleo(self, processo):
         self.controle_memoria.acquire()
+        primeira_ocorrencia = 1
         for index, espaco in enumerate(self.memoria):
             if espaco == processo.PID:
                 self.memoria[index] = 0
+                if primeira_ocorrencia:
+                    self.offset_nucleo = index
+                    primeira_ocorrencia = 0
         if self.memoria_nucleo_cheia.locked():
             self.memoria_nucleo_cheia.release()
         self.controle_memoria.release()
