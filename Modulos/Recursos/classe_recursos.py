@@ -13,20 +13,20 @@ class Recursos:
             utilizando = processo.recursos[requisicao]
             if utilizando:
                 if requisicao == 'cod_impressora':
-                    print('lockando recurso: '+ requisicao)
                     self.impressora.acquire()
+                    print('lockando recurso: '+ requisicao)
                     return()
                 elif requisicao == 'scanner':
-                    print('lockando recurso: '+ requisicao)
                     self.scanner.acquire()
+                    print('lockando recurso: '+ requisicao)
                     return()
                 elif requisicao == 'modem':
-                    print('lockando recurso: '+ requisicao)
                     self.modem.acquire()
+                    print('lockando recurso: '+ requisicao)
                     return()
                 elif requisicao == 'cod_disco':
-                    print('lockando recurso: '+ requisicao)
                     self.sata.acquire()
+                    print('lockando recurso: '+ requisicao)
                     return()
 
     def desaloca_recurso(self, processo):

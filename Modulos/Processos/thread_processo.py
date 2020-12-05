@@ -7,9 +7,10 @@ def executa_processo(processo, recursos, CPU):
         for i in range(1, processo.tempo_de_processador+1):
             if flag_primeira_vez:
                 recursos.requisita_recurso(processo)
+            CPU.acquire()
+            if flag_primeira_vez:
                 print("P"+str(processo.PID)+" STARTED")
                 flag_primeira_vez = 0
-            CPU.acquire()
             print("P"+str(processo.PID)+" instruction "+str(processo.numero_instrucao))
             processo.numero_instrucao += 1
             CPU.release()
