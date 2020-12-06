@@ -13,20 +13,24 @@ class Recursos:
             utilizando = processo.recursos[requisicao]
             if utilizando:
                 if requisicao == 'cod_impressora':
+                    print('P' + str(processo.PID) + ' esperando por recurso: ' + requisicao)
                     self.impressora.acquire()
-                    print('lockando recurso: '+ requisicao)
+                    print('P' + str(processo.PID) + ' lockando recurso: ' + requisicao)
                     return()
                 elif requisicao == 'scanner':
+                    print('P' + str(processo.PID) + ' esperando por recurso: ' + requisicao)
                     self.scanner.acquire()
-                    print('lockando recurso: '+ requisicao)
+                    print('P' + str(processo.PID) + ' lockando recurso: ' + requisicao)
                     return()
                 elif requisicao == 'modem':
+                    print('P' + str(processo.PID) + ' esperando por recurso: ' + requisicao)
                     self.modem.acquire()
-                    print('lockando recurso: '+ requisicao)
+                    print('P' + str(processo.PID) + ' lockando recurso: ' + requisicao)
                     return()
                 elif requisicao == 'cod_disco':
+                    print('P' + str(processo.PID) + ' esperando por recurso: ' + requisicao)
                     self.sata.acquire()
-                    print('lockando recurso: '+ requisicao)
+                    print('P' + str(processo.PID) + ' lockando recurso: ' + requisicao)
                     return()
 
     def desaloca_recurso(self, processo):
@@ -34,14 +38,14 @@ class Recursos:
             utilizando = processo.recursos[requisicao]
             if utilizando:
                 if requisicao == 'cod_impressora':
-                    print('desalocando recurso: '+ requisicao)
+                    print('P' + str(processo.PID) + ' desalocando recurso: ' + requisicao)
                     self.impressora.release()
                 elif requisicao == 'scanner':
-                    print('desalocando recurso: '+ requisicao)
+                    print('P' + str(processo.PID) + ' desalocando recurso: ' + requisicao)
                     self.scanner.release()
                 elif requisicao == 'modem':
-                    print('desalocando recurso: '+ requisicao)
+                    print('P' + str(processo.PID) + ' desalocando recurso: ' + requisicao)
                     self.modem.release()
                 elif requisicao == 'cod_disco':
-                    print('desalocando recurso: '+ requisicao)
+                    print('P' + str(processo.PID) + ' desalocando recurso: ' + requisicao)
                     self.sata.release()

@@ -29,22 +29,18 @@ class Fila:
     def remove_processo(self, memoria):
         if(len(self.fila_tempo_real) > 0):
             processo = self.fila_tempo_real.pop(0)
-            memoria.desaloca_processo_nucleo(processo)
             self.__atualiza_prioridades()
             return(processo)
         elif(len(self.fila_usuario['prioridade1']) > 0):
             processo = self.fila_usuario['prioridade1'].pop(0)
-            memoria.desaloca_processo_usuario(processo)
             self.__atualiza_prioridades()
             return(processo)
         elif(len(self.fila_usuario['prioridade2']) > 0):
             processo = self.fila_usuario['prioridade2'].pop(0)
-            memoria.desaloca_processo_usuario(processo)
             self.__atualiza_prioridades()
             return(processo)
         elif(len(self.fila_usuario['prioridade3']) > 0):
             processo = self.fila_usuario['prioridade3'].pop(0)
-            memoria.desaloca_processo_usuario(processo)
             self.__atualiza_prioridades()
             return(processo)
         else:

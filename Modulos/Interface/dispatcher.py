@@ -1,15 +1,12 @@
 class Despachante:
     def __init__(self):
-        self.tempos_de_processador = []
-        self.flag_usuario = []
-        self.proximo_PID = 0
+        self.tempos_de_processador = {}
+        self.flag_usuario = {}
     
     def despacha_processo(self, processo, CPU):
         CPU.acquire()
-        if processo.PID == -1:
-            processo.PID = self.proximo_PID
-            self.proximo_PID += 1
-            print('dispatcher =>')
+        if processo.numero_instrucao == 1:
+            print('\ndispatcher =>')
             print('PID: ' + str(processo.PID))
             print('offset: ' + str(processo.offset))
             print('blocos: ' + str(processo.blocos_em_memoria))
@@ -20,10 +17,10 @@ class Despachante:
             print('modems: ' + str(processo.recursos['modem']))
             print('satas: ' + str(processo.recursos['cod_disco']))
             if processo.prioridade:
-                self.flag_usuario.append(1)
+                self.flag_usuario[str(processo.PID)] = 1
             else:
-                self.flag_usuario.append(0)
-            self.tempos_de_processador.append(processo.tempo_de_processador)
+                self.flag_usuario[str(processo.PID)] = 0
+            self.tempos_de_processador[str(processo.PID)] = processo.tempo_de_processador
             
         CPU.release()
 

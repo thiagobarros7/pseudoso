@@ -5,6 +5,7 @@ class Memoria:
         self.memoria = [0]*tamanho_memoria
         self.offset_usuario = 64
         self.offset_nucleo = 0
+        self.PID = 0
         self.controle_memoria = threading.Lock()
         self.memoria_usuario_cheia = threading.Lock()
         self.memoria_nucleo_cheia = threading.Lock()
@@ -33,9 +34,11 @@ class Memoria:
     def aloca_processo_usuario(self, processo):
         self.controle_memoria.acquire()
         if self.__verifica_memoria(self.offset_usuario, processo.blocos_em_memoria):
+            processo.PID = self.PID
             self.__aloca_processo(self.offset_usuario, processo.blocos_em_memoria, processo.PID)
             processo.offset = self.offset_usuario
             self.offset_usuario = self.offset_usuario+processo.blocos_em_memoria
+            self.PID += 1
         else:
             print('Não foi possivel alocar o processo ' + processo.PID + ' em memória')
             self.controle_memoria.release()
@@ -46,9 +49,11 @@ class Memoria:
     def aloca_processo_nucleo(self, processo):
         self.controle_memoria.acquire()
         if self.__verifica_memoria(self.offset_nucleo, processo.blocos_em_memoria, 1):
+            processo.PID = self.PID
             self.__aloca_processo(self.offset_nucleo, processo.blocos_em_memoria, processo.PID)
             processo.offset = self.offset_nucleo
             self.offset_nucleo = self.offset_nucleo+processo.blocos_em_memoria
+            self.PID += 1
         else:
             print('Não foi possivel alocar o processo em memória')
             self.controle_memoria.release()

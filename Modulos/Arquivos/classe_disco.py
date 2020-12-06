@@ -9,8 +9,8 @@ class Disco:
         self.blocos = [0]*arquivos_lidos['blocos_disco']
         self.arquivos = arquivos_lidos['arquivos']
         self.operacoes = arquivos_lidos['operacoes']
-        self.tempos_de_processador = []
-        self.flag_usuario = []
+        self.tempos_de_processador = {}
+        self.flag_usuario = {}
         self.dono_arquivo = {}
         self.__insere_arquivos_iniciais()
 
@@ -60,7 +60,7 @@ class Disco:
         return(1)
 
     def __verifica_processo_usuario(self, PID):
-        if self.flag_usuario[PID]:
+        if self.flag_usuario[str(PID)]:
             return(1)
         return(0)
 
@@ -78,19 +78,19 @@ class Disco:
             return(1)
 
     def __verifica_tempo_de_processador(self, PID):
-        if self.tempos_de_processador[PID] > 0:
+        if self.tempos_de_processador[str(PID)] > 0:
             return(1)
         return(0)
 
     def __verifica_processo(self, PID):
-        if len(self.tempos_de_processador) > PID:
+        if str(PID) in self.tempos_de_processador:
             return (1)
         return(0)
 
     def __executa_operacao(self, operacao):
         if self.__verifica_processo(operacao.PID):
             if self.__verifica_tempo_de_processador(operacao.PID):
-                self.tempos_de_processador[operacao.PID] -= 1
+                self.tempos_de_processador[str(operacao.PID)] -= 1
                 if (not operacao.cod_operacao and operacao.tamanho):
                     offset = self.__operacao_inserir(operacao)
                     if not self.__cadastra_dono_arquivo(operacao.PID, operacao.nome):

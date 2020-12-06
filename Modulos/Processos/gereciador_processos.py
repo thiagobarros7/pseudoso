@@ -19,8 +19,7 @@ def inicia_processos(processos, fila, memoria):
 
 def gerencia_processos(fila_pronto, processos, recursos, memoria, disco):
     CPU = threading.Lock()
-    threads = []
-    processos_finalizados = []
+    threads = {}
     despachante = Despachante()
     while(threading.active_count() > 1):
         processo = fila_pronto.remove_processo(memoria)
@@ -28,16 +27,17 @@ def gerencia_processos(fila_pronto, processos, recursos, memoria, disco):
             if processo.prioridade:
                 if processo.numero_instrucao == 1:
                     despachante.despacha_processo(processo, CPU)
-                    threads.append(threading.Thread(target=executa_processo, args=(processo, recursos, CPU, )))
-                    threads[processo.PID].start()
+                    threads['processo.PID'] = threading.Thread(target=executa_processo, args=(processo, recursos, CPU, ))
+                    threads['processo.PID'].start()
+                elif processo.numero_instrucao == processo.tempo_de_processador:
+                    threads['processo.PID'].run()
+                    memoria.desaloca_processo_usuario(processo)
                 else:
-                    threads[processo.PID].run()
+                    threads['processo.PID'].run()
             elif processo.prioridade == 0:
                 despachante.despacha_processo(processo, CPU)
-                threads.append(threading.Thread(target=executa_processo, args=(processo, recursos, CPU, )))
-                threads[processo.PID].start()
-                processos_finalizados.append(1)
+                threads['processo.PID'] = threading.Thread(target=executa_processo, args=(processo, recursos, CPU, ))
+                threads['processo.PID'].start()
+                memoria.desaloca_processo_nucleo(processo)
 
-    for thread in threads:
-        thread.join()
     despachante.executa_sistema_de_arquivos(disco)
