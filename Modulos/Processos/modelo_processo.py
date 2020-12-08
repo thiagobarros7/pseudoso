@@ -9,7 +9,7 @@ class Processo:
         self.recursos['scanner'] = int(dados_processo[5])
         self.recursos['modem'] = int(dados_processo[6])
         self.recursos['cod_disco'] = int(dados_processo[7])
-        self.PID = -1
+        self.PID = None
         self.offset = 0
         self.numero_instrucao = 1
         self.execucao = 0

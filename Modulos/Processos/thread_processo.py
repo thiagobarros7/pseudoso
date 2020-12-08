@@ -12,11 +12,12 @@ def executa_processo(processo, recursos, CPU):
                 print("P"+str(processo.PID)+" STARTED")
                 flag_primeira_vez = 0
             print("P"+str(processo.PID)+" instruction "+str(processo.numero_instrucao))
+            if processo.numero_instrucao == processo.tempo_de_processador:
+                recursos.desaloca_recurso(processo)
+                print("P"+str(processo.PID)+" return SIGINT")
             processo.numero_instrucao += 1
             CPU.release()
             time.sleep(1)
-        recursos.desaloca_recurso(processo)
-        print("P"+str(processo.PID)+" return SIGINT")
     else:
         CPU.acquire()
         print("P"+str(processo.PID)+" STARTED")

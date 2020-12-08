@@ -2,7 +2,7 @@ import threading
 
 class Memoria:
     def __init__(self, tamanho_memoria):
-        self.memoria = [0]*tamanho_memoria
+        self.memoria = [None]*tamanho_memoria
         self.offset_usuario = 64
         self.offset_nucleo = 0
         self.PID = 0
@@ -19,7 +19,7 @@ class Memoria:
             return(0)
         else:
             for index in range(offset, tamanho_processo+offset):
-                if self.memoria[index] != 0:
+                if self.memoria[index] is not None:
                     if nucleo:
                         self.memoria_nucleo_cheia.acquire()
                     else:
@@ -40,7 +40,7 @@ class Memoria:
             self.offset_usuario = self.offset_usuario+processo.blocos_em_memoria
             self.PID += 1
         else:
-            print('Não foi possivel alocar o processo ' + processo.PID + ' em memória')
+            print('Não foi possivel alocar o processo em memória')
             self.controle_memoria.release()
             return(0)
         self.controle_memoria.release()
@@ -66,7 +66,7 @@ class Memoria:
         primeira_ocorrencia = 1
         for index, espaco in enumerate(self.memoria):
             if espaco == processo.PID:
-                self.memoria[index] = 0
+                self.memoria[index] = None
                 if primeira_ocorrencia:
                     self.offset_usuario = index
                     primeira_ocorrencia = 0
@@ -80,7 +80,7 @@ class Memoria:
         primeira_ocorrencia = 1
         for index, espaco in enumerate(self.memoria):
             if espaco == processo.PID:
-                self.memoria[index] = 0
+                self.memoria[index] = None
                 if primeira_ocorrencia:
                     self.offset_nucleo = index
                     primeira_ocorrencia = 0
